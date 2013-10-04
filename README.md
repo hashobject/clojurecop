@@ -10,6 +10,8 @@ Pushback reader for line numbers
 
 librayr for code walking. riddley
 
+think about case when we can defined method inside the condition
+
 
 # metrics
 

@@ -3,8 +3,8 @@
 
 
 (defn fn-has-doc? [code-unit]
-  (string? (nth code-unit 2)))
-
+   (let [unit-meta (meta (second code-unit))]
+     (not (empty? (:doc unit-meta)))))
 
 
 (defn public-fn-with-doc? [code-unit]

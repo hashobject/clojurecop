@@ -2,7 +2,10 @@
 
 
 (defn public-fn? [code-unit]
-  (= "defn" (str (first code-unit))))
+  (let [unit-meta (meta (second code-unit))]
+    (and
+      (not (empty? (:arglists unit-meta)))
+      (not (true? (:private unit-meta))))))
 
 
 (defn run
