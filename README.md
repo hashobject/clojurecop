@@ -19,6 +19,7 @@ think about case when we can defined method inside the condition
   * number of namespaces. May help you to understand how big library is. However maybe useless as LOC.
   * number of public methods
   * percantage of public methods with doctrings
+  * find files that were changed a lot of times
 
   ...
 
