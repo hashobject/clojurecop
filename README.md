@@ -21,6 +21,8 @@ think about case when we can defined method inside the condition
   * percantage of public methods with doctrings
   * find files that were changed a lot of times
   * calculate how many distict (use '...) were used in project
+  * calculate number of anonymous functions
+  * calculate number of macros
 
   ...
 

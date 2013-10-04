@@ -63,10 +63,23 @@
         :num-private-methods num-private-fns
         :num-public-methods num-public-fns
         :num-public-fns-with-doc num-public-fns-with-doc
+
         }))
 
 
 
+(defn make-summary [files-stat]
+  (apply merge-with +
+         (for [x files-stat]
+              (select-keys x [:num-private-methods :num-public-methods :num-public-fns-with-doc]))))
 
-(doall (map #(process-file %) (clj-files "src")))
+(defn analyze [path]
+ (let [files (clj-files path)
+       files-stat (doall (map #(process-file %) (clj-files "src")))
+       summary (make-summary files-stat)
+       summary (assoc summary :num-namespace (count files-stat))
+       result {:summary summary
+               :entries files-stat}]
+     result))
 
+(analyze "src")
