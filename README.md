@@ -25,6 +25,7 @@ can we track when method was changed significantly and docs were not updated?
   * calculate how many distict (use '...) were used in project
   * calculate number of anonymous functions
   * calculate number of macros
+  * calculate number of types: defrecord?
 
   ...
 

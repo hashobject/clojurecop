@@ -3,7 +3,9 @@
             [me.raynes.fs :as fs]
             [clojurecop.metrics.count-private-fns :as count-private-fns]
             [clojurecop.metrics.count-public-fns :as count-public-fns]
-            [clojurecop.metrics.count-public-fns-with-doc :as count-public-fns-with-doc]))
+            [clojurecop.metrics.count-public-fns-with-doc :as count-public-fns-with-doc]
+            [clojurecop.metrics.public-fn-doc-rate :as public-fn-doc-rate]
+            ))
 
 
 
@@ -58,11 +60,13 @@
         num-private-fns (count-private-fns/run code)
         num-public-fns (count-public-fns/run code)
         num-public-fns-with-doc (count-public-fns-with-doc/run code)
+        rate-of-documented-fns (public-fn-doc-rate/run num-public-fns-with-doc num-public-fns)
         ]
        {:ns-name nsname
-        :num-private-methods num-private-fns
-        :num-public-methods num-public-fns
+        :num-private-fns num-private-fns
+        :num-public-fns num-public-fns
         :num-public-fns-with-doc num-public-fns-with-doc
+        :rate-of-documented-fns rate-of-documented-fns
 
         }))
 
@@ -71,13 +75,19 @@
 (defn make-summary [files-stat]
   (apply merge-with +
          (for [x files-stat]
-              (select-keys x [:num-private-methods :num-public-methods :num-public-fns-with-doc]))))
+              (select-keys x [:num-private-fns
+                              :num-public-fns
+                              :num-public-fns-with-doc]))))
 
 (defn analyze [path]
  (let [files (clj-files path)
        files-stat (doall (map #(process-file %) (clj-files "src")))
        summary (make-summary files-stat)
-       summary (assoc summary :num-namespace (count files-stat))
+       summary (assoc summary
+                 :num-namespace (count files-stat)
+                 :rate-of-documented-fns (public-fn-doc-rate/run
+                                           (:num-public-fns-with-doc summary)
+                                           (:num-public-fns summary)))
        result {:summary summary
                :entries files-stat}]
      result))
