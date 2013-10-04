@@ -1,4 +1,7 @@
-(ns clojurecop.core)
+(ns clojurecop.core
+  (:require [clojurecop.metrics.count-private-fns :as count-private-fns]
+            [clojurecop.metrics.count-public-fns :as count-public-fns]
+            [clojurecop.metrics.count-public-fns-with-doc :as count-public-fns-with-doc]))
 
 
 
@@ -6,46 +9,26 @@
   (str "(" s ")"))
 
 
-
 (defn- read-clj-file [filepath]
   (read-string (wrap-list (slurp filepath))))
 
 
-(defn private-fn? [code-unit]
-  (= 'defn- (first code-unit)))
+(defn test-fun-without-doc []
+  "xx")
 
-(defn public-fn? [code-unit]
-  (= "defn" (str (first code-unit))))
-
-(defn fn-has-doc? [code-unit]
-  (string? (nth code-unit 2)))
-
-(defn public-fn-with-doc? [code-unit]
-  (and (public-fn? code-unit)
-       (fn-has-doc? code-unit)))
+(defn test-fun-with-doc
+  "some function with doc"
+  []
+  "xx")
 
 
-(defn count-private-fns
-  "Count number of private fns in the src-code unit"
-  [src-code]
-  (count (filter private-fn? src-code)))
+(def source-code (read-clj-file "src/clojurecop/core.clj"))
 
+(count-private-fns/run source-code)
 
-(defn count-public-fns
-  "Count number of public fns in the src-code unit"
-  [src-code]
-  (count (filter public-fn? src-code)))
+(count-public-fns/run source-code)
 
-(defn count-public-fns-with-doc [src-code]
-  (count (filter public-fn-with-doc? src-code)))
-
-
-
-(count-private-fns (read-clj-file "src/clojurecop/core.clj"))
-
-(count-public-fns (read-clj-file "src/clojurecop/core.clj"))
-
-(count-public-fns-with-doc (read-clj-file "src/clojurecop/core.clj"))
+(count-public-fns-with-doc/run source-code)
 
 
 

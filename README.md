@@ -3,6 +3,14 @@
 A Clojure library designed to collect code quality metrics for Clojure code.
 
 
+
+# TODO
+
+Pushback reader for line numbers
+
+librayr for code walking. riddley
+
+
 # metrics
 
 
