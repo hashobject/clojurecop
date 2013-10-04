@@ -29,30 +29,6 @@
   (fs/find-files* path #(re-matches #".*clj" (.getName %))))
 
 
-(defn test-fun-without-doc []
-  "xx")
-
-(defn test-fun-with-doc
-  "some function with doc"
-  []
-  "xx")
-
-
-(def pi 3.14)
-
-(def source-code
-  (read-clj-file "src/clojurecop/core.clj"))
-
-
-(def code-struct
-  (riddley-walk/macroexpand-all source-code))
-
-
-
-(def source-code-files (clj-files "src"))
-
-(.getPath (first source-code-files))
-
 (defn process-file [file]
   (let [path (.getPath file)
         code (read-code-struct path)
@@ -71,6 +47,8 @@
         }))
 
 
+
+(second (nth (nth (nth (read-code-struct "src/clojurecop/test.clj") 1) 5) 3))
 
 (defn make-summary [files-stat]
   (apply merge-with +
@@ -92,4 +70,7 @@
                :entries files-stat}]
      result))
 
-(analyze "src")
+(def result (analyze "src"))
+
+
+(:summary result)

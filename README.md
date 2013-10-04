@@ -8,9 +8,9 @@ A Clojure library designed to collect code quality metrics for Clojure code.
 
 Pushback reader for line numbers
 
-librayr for code walking. riddley
+library for code walking. riddley
 
-think about case when we can defined method inside the condition
+think about case when we can defined method inside the condition or defrecord?
 
 
 can we track when method was changed significantly and docs were not updated?
