@@ -9,6 +9,7 @@
             [clojurecop.metrics.count-protocols :as count-protocols]
             [clojurecop.metrics.count-protocols-with-doc :as count-protocols-with-doc]
             [clojurecop.metrics.count-types :as count-types]
+            [clojurecop.metrics.count-used-modules :as count-used-modules]
             ))
 
 
@@ -35,6 +36,8 @@
 
 (defn process-file [file]
   (let [path (.getPath file)
+        ; we shuld pass src-code as param to read-code-struct
+        src-code (read-clj-file path)
         code (read-code-struct path)
         nsname (extract-ns-name code)
         num-private-fns (count-private-fns/run code)
@@ -45,6 +48,7 @@
         num-protocols-with-doc (count-protocols-with-doc/run code)
         rate-of-documented-protocols (protocol-doc-rate/run num-protocols-with-doc num-protocols)
         num-types (count-types/run code)
+        num-used-modules (count-used-modules/run src-code)
         ]
        {:ns-name nsname
         :num-private-fns num-private-fns
@@ -55,16 +59,24 @@
         :num-protocols-with-doc num-protocols-with-doc
         :rate-of-documented-protocols rate-of-documented-protocols
         :num-types num-types
+        :num-used-modules num-used-modules
         }))
 
 
 
 ;(read-code-struct "src/clojurecop/test.clj")
 
-(def x (nth (read-code-struct "src/clojurecop/test.clj") 2))
 
 
-(not (nil? (:doc (second (nth (nth x 5) 3)))))
+(count-used-modules/run (read-clj-file "src/clojurecop/core.clj"))
+
+
+
+(filter (fn [x]
+          (and
+             (seq? x)
+             (= ':use (first x))))
+        (first (read-clj-file "src/clojurecop/test.clj")))
 
 
 (defn make-summary [files-stat]
@@ -75,7 +87,8 @@
                               :num-public-fns-with-doc
                               :num-protocols
                               :num-protocols-with-doc
-                              :num-types]))))
+                              :num-types
+                              :num-used-modules]))))
 
 (defn analyze [path]
  (let [files (clj-files path)

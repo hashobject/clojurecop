@@ -28,6 +28,7 @@ can we track when method was changed significantly and docs were not updated?
   * calculate number of types: defrecord?
   * average number of methods in types and record?
   * percentage of documented protocols/types/records
+  * calculate avaegrage lenth of comment for method, types, etc
 
   ...
 

@@ -1,4 +1,5 @@
-(ns clojurecop.test)
+(ns clojurecop.test
+  (:use [clojurecop.core]))
 
 (defprotocol Fly
   "A simple protocol for flying"
