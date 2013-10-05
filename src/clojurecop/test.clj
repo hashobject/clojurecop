@@ -7,13 +7,21 @@
 
 
 (defprotocol Test
-  "A simple protocol for test"
   (test-me [this] "Method to testing"))
 
 
 (deftype Person [name]
   Test)
 
+
+(defprotocol IAnimal
+  "the animal protocol"
+  (inner-report [o] "a report"))
+
+;(defrecord Dog []
+;  IAnimal
+;  (inner-report [o]
+;    "Woof Woof"))
 
 (defn test-fun-without-doc []
   "xx")
@@ -25,3 +33,6 @@
 
 
 (def pi 3.14)
+
+
+;(inner-report (Dog.))

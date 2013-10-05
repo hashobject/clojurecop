@@ -26,6 +26,8 @@ can we track when method was changed significantly and docs were not updated?
   * calculate number of anonymous functions
   * calculate number of macros
   * calculate number of types: defrecord?
+  * average number of methods in types and record?
+  * percentage of documented protocols/types/records
 
   ...
 

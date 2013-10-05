@@ -6,6 +6,7 @@
             [clojurecop.metrics.count-public-fns-with-doc :as count-public-fns-with-doc]
             [clojurecop.metrics.public-fn-doc-rate :as public-fn-doc-rate]
             [clojurecop.metrics.count-protocols :as count-protocols]
+            [clojurecop.metrics.count-protocols-with-doc :as count-protocols-with-doc]
             [clojurecop.metrics.count-types :as count-types]
             ))
 
@@ -40,6 +41,7 @@
         num-public-fns-with-doc (count-public-fns-with-doc/run code)
         rate-of-documented-fns (public-fn-doc-rate/run num-public-fns-with-doc num-public-fns)
         num-protocols (count-protocols/run code)
+        num-protocols-with-doc (count-protocols-with-doc/run code)
         num-types (count-types/run code)
         ]
        {:ns-name nsname
@@ -48,13 +50,18 @@
         :num-public-fns-with-doc num-public-fns-with-doc
         :rate-of-documented-fns rate-of-documented-fns
         :num-protocols num-protocols
+        :num-protocols-with-doc num-protocols-with-doc
         :num-types num-types
         }))
 
 
 
+;(read-code-struct "src/clojurecop/test.clj")
+
 (def x (nth (read-code-struct "src/clojurecop/test.clj") 2))
 
+
+(not (nil? (:doc (second (nth (nth x 5) 3)))))
 
 
 (defn make-summary [files-stat]
@@ -64,6 +71,7 @@
                               :num-public-fns
                               :num-public-fns-with-doc
                               :num-protocols
+                              :num-protocols-with-doc
                               :num-types]))))
 
 (defn analyze [path]
