@@ -10,6 +10,11 @@
   "A simple protocol for test"
   (test-me [this] "Method to testing"))
 
+
+(deftype Person [name]
+  Test)
+
+
 (defn test-fun-without-doc []
   "xx")
 

@@ -6,6 +6,7 @@
             [clojurecop.metrics.count-public-fns-with-doc :as count-public-fns-with-doc]
             [clojurecop.metrics.public-fn-doc-rate :as public-fn-doc-rate]
             [clojurecop.metrics.count-protocols :as count-protocols]
+            [clojurecop.metrics.count-types :as count-types]
             ))
 
 
@@ -39,6 +40,7 @@
         num-public-fns-with-doc (count-public-fns-with-doc/run code)
         rate-of-documented-fns (public-fn-doc-rate/run num-public-fns-with-doc num-public-fns)
         num-protocols (count-protocols/run code)
+        num-types (count-types/run code)
         ]
        {:ns-name nsname
         :num-private-fns num-private-fns
@@ -46,15 +48,14 @@
         :num-public-fns-with-doc num-public-fns-with-doc
         :rate-of-documented-fns rate-of-documented-fns
         :num-protocols num-protocols
+        :num-types num-types
         }))
 
 
 
+(def x (nth (read-code-struct "src/clojurecop/test.clj") 2))
 
-;(is-protocol? (nth (read-code-struct "src/clojurecop/test.clj") 4))
-;(is-protocol? (nth (read-code-struct "src/clojurecop/test.clj") 2))
 
-;(second (nth (nth (nth (read-code-struct "src/clojurecop/test.clj") 2) 5) 3))
 
 (defn make-summary [files-stat]
   (apply merge-with +
@@ -62,7 +63,8 @@
               (select-keys x [:num-private-fns
                               :num-public-fns
                               :num-public-fns-with-doc
-                              :num-protocols]))))
+                              :num-protocols
+                              :num-types]))))
 
 (defn analyze [path]
  (let [files (clj-files path)
