@@ -3,5 +3,7 @@
 
 (defn run
   "Percentage of documented public methods"
-  [number-of-documented-fns total-number-of-fns]
-  (/ number-of-documented-fns total-number-of-fns))
+  [documented total]
+  (if (zero? total)
+    1
+    (/ documented total)))

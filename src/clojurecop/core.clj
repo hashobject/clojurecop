@@ -5,6 +5,7 @@
             [clojurecop.metrics.count-public-fns :as count-public-fns]
             [clojurecop.metrics.count-public-fns-with-doc :as count-public-fns-with-doc]
             [clojurecop.metrics.public-fn-doc-rate :as public-fn-doc-rate]
+            [clojurecop.metrics.protocol-doc-rate :as protocol-doc-rate]
             [clojurecop.metrics.count-protocols :as count-protocols]
             [clojurecop.metrics.count-protocols-with-doc :as count-protocols-with-doc]
             [clojurecop.metrics.count-types :as count-types]
@@ -42,6 +43,7 @@
         rate-of-documented-fns (public-fn-doc-rate/run num-public-fns-with-doc num-public-fns)
         num-protocols (count-protocols/run code)
         num-protocols-with-doc (count-protocols-with-doc/run code)
+        rate-of-documented-protocols (protocol-doc-rate/run num-protocols-with-doc num-protocols)
         num-types (count-types/run code)
         ]
        {:ns-name nsname
@@ -51,6 +53,7 @@
         :rate-of-documented-fns rate-of-documented-fns
         :num-protocols num-protocols
         :num-protocols-with-doc num-protocols-with-doc
+        :rate-of-documented-protocols rate-of-documented-protocols
         :num-types num-types
         }))
 
@@ -82,7 +85,11 @@
                  :num-namespace (count files-stat)
                  :rate-of-documented-fns (public-fn-doc-rate/run
                                            (:num-public-fns-with-doc summary)
-                                           (:num-public-fns summary)))
+                                           (:num-public-fns summary))
+                 :rate-of-documented-protocols (protocol-doc-rate/run
+                                                 (:num-protocols-with-doc summary)
+                                                 (:num-protocols summary))
+                 )
        result {:summary summary
                :entries files-stat}]
      result))
