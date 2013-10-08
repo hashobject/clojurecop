@@ -21,11 +21,3 @@
       (count (second use-statement)))))
 
 
-
-
-(count
- (second
-  (first
-   (filter use-statement?
-           (first '((ns clojurecop.metrics.count-used-modules (:use [riddley.walk]))))))))
-

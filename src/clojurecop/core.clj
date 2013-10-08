@@ -21,9 +21,9 @@
   (read-string (wrap-list (slurp filepath))))
 
 
-(defn- read-code-struct [src-code]
+(defn- read-code-struct [filepath]
   (riddley-walk/macroexpand-all
-   (src-code)))
+   (read-clj-file filepath)))
 
 
 (defn- extract-ns-name [file-code]
@@ -34,11 +34,14 @@
   (fs/find-files* path #(re-matches #".*clj" (.getName %))))
 
 
+;(read-clj-file "/Users/podviaznikov/Dropbox/hashobject/repos/clojurecop/src/clojurecop/test.clj")
+;(read-code-struct (read-clj-file "/Users/podviaznikov/Dropbox/hashobject/repos/clojurecop/src/clojurecop/test.clj"))
+
+
 (defn process-file [file]
   (let [path (.getPath file)
-        ; we should pass src-code as param to read-code-struct
         src-code (read-clj-file path)
-        code (read-code-struct src-code)
+        code (read-code-struct path)
         nsname (extract-ns-name code)
         num-private-fns (count-private-fns/run code)
         num-public-fns (count-public-fns/run code)
@@ -73,6 +76,8 @@
 
 
 
+(process-file (nth (clj-files "src/clojurecop/test.clj") 0))
+
 
 (defn make-summary [files-stat]
   (apply merge-with +
@@ -87,7 +92,7 @@
 (defn analyze [path]
  (let [files (clj-files path)
        files-stat (doall (map #(process-file %) (clj-files "src")))
-       summary {};(make-summary files-stat)
+       summary (make-summary files-stat)
        summary (assoc summary
                  :num-namespace (count files-stat)
                  :rate-of-documented-fns (public-fn-doc-rate/run
