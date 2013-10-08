@@ -33,6 +33,12 @@ can we track when method was changed significantly and docs were not updated?
   ...
 
 
+## idea
+
+
+track if documentation was updated for method if we add/remove/change parameters
+
+
 # references
 
   * http://stackoverflow.com/questions/17622666/tool-like-metric-fu-or-codeclimate-com-for-clojure
